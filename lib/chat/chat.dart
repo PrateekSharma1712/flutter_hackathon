@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hackathon/database/database_collections.dart';
+import 'package:flutter_hackathon/translation/TranslationResponse.dart';
+import 'package:flutter_hackathon/translation/TranslationService.dart';
 
 class Chats extends StatefulWidget {
   @override
@@ -30,6 +32,22 @@ class _ChatsState extends State<Chats> with SingleTickerProviderStateMixin {
 
   bool isSender = false;
 
+  addMessage(message) async {
+    Translation t = await translateString(message, "en");
+    refereance.add({
+      "email": _userEmail,
+      "message": t.translatedText,
+      "orig_message":message,
+      "lang": t.detectedSourceLanguage,
+      "created": new DateTime.now().millisecondsSinceEpoch,
+      "is_sender": !isSender
+    }).then((value) {
+      print("added");
+    }).catchError((e) {
+      print("not added");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,23 +55,16 @@ class _ChatsState extends State<Chats> with SingleTickerProviderStateMixin {
         actions: <Widget>[
           IconButton(
               onPressed: () {
-                refereance.add({
-                  "email": _userEmail,
-                  "message": "HIIII",
-                  "created": new DateTime.now().millisecondsSinceEpoch,
-                  "is_sender": !isSender
-                }).then((value) {
-                  print("added");
-                }).catchError((e) {
-                  print("not added");
-                });
+                String message = "Hola";
+
+                addMessage(message);
               },
               icon: Icon(Icons.add))
         ],
       ),
       body: Container(
         child: StreamBuilder(
-          stream: refereance.where("email",isEqualTo: _userEmail).snapshots(),
+          stream: refereance.where("email", isEqualTo: _userEmail).snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Center(
@@ -76,6 +87,13 @@ class _ChatsState extends State<Chats> with SingleTickerProviderStateMixin {
   }
 
   buildItem(index, document) {
-    return Text("HI");
+    var data=document.data;
+
+    return Column(
+      children: <Widget>[
+        Text("${data["message"]}"),
+        Text("${data["orig_message"]}"),
+      ],
+    );
   }
 }
