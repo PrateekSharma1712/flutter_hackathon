@@ -26,6 +26,7 @@ class _UserLoginState extends State<UserLogin>
   FocusNode textSecondFocusNode = new FocusNode();
   bool isLoading = false;
 
+
   @override
   void initState() {
     _controller = AnimationController(vsync: this);
@@ -320,6 +321,7 @@ class _UserLoginState extends State<UserLogin>
               ),
             ],
           ),
+        
         ),
       ),
     );
