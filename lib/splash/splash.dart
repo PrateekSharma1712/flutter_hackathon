@@ -29,11 +29,52 @@ class _AppSplashScreenState extends State<AppSplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
 
     return Scaffold(
         body: Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.all(32),
-            child: Text("Hackathon")));
+      alignment: Alignment.center,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration( borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(60),
+                          bottomRight: Radius.circular(60),
+                        ),
+                gradient: LinearGradient(colors: [
+                  Color(0xff1C6BFF),
+                  Color(0xffC523FF),
+                ], begin: Alignment.topLeft, end: Alignment.bottomRight)),
+           height: size.height,
+            width: double.infinity,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  alignment: Alignment.center,
+                  height: size.height * 0.15,
+                  width: size.height * 0.15,
+                  decoration: BoxDecoration(),
+                  child: Material(
+                      elevation: 4,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(75))),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Image.asset(
+                          "assets/images/icon.png",
+                          fit: BoxFit.cover,
+                        ),
+                      )),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    ));
   }
 }

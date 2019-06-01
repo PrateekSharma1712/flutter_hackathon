@@ -16,6 +16,7 @@ class UserLogin extends StatefulWidget {
 class _UserLoginState extends State<UserLogin>
     with SingleTickerProviderStateMixin {
   AnimationController _controller;
+  Animation<double> splashAnimation;
   final passwordTextController = TextEditingController();
   final nameTextController = TextEditingController();
 
@@ -28,251 +29,298 @@ class _UserLoginState extends State<UserLogin>
 
   @override
   void initState() {
-    _controller = AnimationController(vsync: this);
+    _controller =
+        AnimationController(duration: Duration(seconds: 2), vsync: this);
+    Tween tween = new Tween<double>(begin: 1, end: 0.5);
+    splashAnimation = tween.animate(_controller);
+   // splashAnimation.addListener(() {
+    //  setState(() {});
+  //  });
+    _controller.forward();
     emailTextController.text = "viv@test.com";
     passwordTextController.text = "111111";
     super.initState();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    updateData() {
-      String name = nameTextController.text;
-      String email = emailTextController.text;
-      LoginServer().uploadUserData(email, name).then((isComplete) {
-        if (isComplete) {
-          SnackBarDelegate.showSnackBar(
-              context, "Registration complete", _scaffoldKey);
-        } else {}
-        setState(() {
-          isLoading = false;
-        });
+  updateData() {
+    String name = nameTextController.text;
+    String email = emailTextController.text;
+    LoginServer().uploadUserData(email, name).then((isComplete) {
+      if (isComplete) {
+        SnackBarDelegate.showSnackBar(
+            context, "Registration complete", _scaffoldKey);
+      } else {}
+      setState(() {
+        isLoading = false;
       });
-    }
+    });
+  }
 
-    askUserName() {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => new AlertDialog(
-              title: new Text("Details"),
-              content: Column(
-                children: <Widget>[
-                  new Text("Enter your name to continue"),
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 4),
-                    decoration: BoxDecoration(
+  askUserName() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => new AlertDialog(
+            title: new Text("Details"),
+            content: Column(
+              children: <Widget>[
+                new Text("Enter your name to continue"),
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 4),
+                  decoration: BoxDecoration(
 //                    color: Colors.black38,
-                        borderRadius: BorderRadius.circular(75),
-                        border: Border.all(color: Colors.black26)),
-                    margin: EdgeInsets.symmetric(vertical: 8, horizontal: 48),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: TextFormField(
-                            controller: nameTextController,
-                            style: TextStyle(letterSpacing: 1),
-                            textAlign: TextAlign.center,
-                            keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Name',
-                                hintStyle: TextStyle(
-                                    fontSize: 16,
+                      borderRadius: BorderRadius.circular(75),
+                      border: Border.all(color: Colors.black26)),
+                  margin: EdgeInsets.symmetric(vertical: 8, horizontal: 48),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: TextFormField(
+                          controller: nameTextController,
+                          style: TextStyle(letterSpacing: 1),
+                          textAlign: TextAlign.center,
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Name',
+                              hintStyle: TextStyle(
+                                  fontSize: 16,
 //                                color: Colors.white54,
-                                    letterSpacing: 1)),
-                            validator: Validator.validateEmail,
-                            textInputAction: TextInputAction.next,
-                            onFieldSubmitted: (value) {
-                              updateData();
-                              Navigator.of(context).pop();
-                            },
-                          ),
+                                  letterSpacing: 1)),
+                          validator: Validator.validateEmail,
+                          textInputAction: TextInputAction.next,
+                          onFieldSubmitted: (value) {
+                            updateData();
+                            Navigator.of(context).pop();
+                          },
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              actions: [
-                FlatButton(
-                  child: new Text('Submit'),
-                  onPressed: () async {
-                    updateData();
-
-                    Navigator.of(context).pop();
-                  },
-                )
+                ),
               ],
             ),
-      );
-    }
+            actions: [
+              FlatButton(
+                child: new Text('Submit'),
+                onPressed: () async {
+                  updateData();
 
-    showError(error) {
-      SnackBarDelegate.showSnackBar(context, error, _scaffoldKey);
-    }
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          ),
+    );
+  }
 
-    signIn() {
-      String email = emailTextController.text.toString().trim();
-      String password = passwordTextController.text.toString().trim();
-      LoginServer().handleSignIn(email, password).then((user) {
-        if (user == "no_user_data") {
-          askUserName();
-        } else if (user == "error") {
-          showError(user);
-        } else {
-          print(user);
-          User u = user;
-          if (u != null) {
-            UserSharedPreference.updateLoggedInUserDetails(
-              email,
-              u.name,
-            );
-            UserSharedPreference.getLoggedInUserDetails().then((userData) {
-              print(userData);
-              Navigator.pushReplacementNamed(context, "/chat");
-            });
-          }
+  showError(error) {
+    SnackBarDelegate.showSnackBar(context, error, _scaffoldKey);
+  }
+
+  signIn() {
+    String email = emailTextController.text.toString().trim();
+    String password = passwordTextController.text.toString().trim();
+    LoginServer().handleSignIn(email, password).then((user) {
+      if (user == "no_user_data") {
+        askUserName();
+      } else if (user == "error") {
+        showError(user);
+      } else {
+        print(user);
+        User u = user;
+        if (u != null) {
+          UserSharedPreference.updateLoggedInUserDetails(
+            email,
+            u.name,
+          );
+          UserSharedPreference.getLoggedInUserDetails().then((userData) {
+            print(userData);
+            Navigator.pushReplacementNamed(context, "/chat");
+          });
         }
-      });
-    }
+      }
+    });
+  }
 
-    return Scaffold(
-      key: _scaffoldKey,
-      resizeToAvoidBottomPadding: false,
+  @override
+  Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, widget) => Scaffold(
+            key: _scaffoldKey,
+            resizeToAvoidBottomPadding: true,
 //      appBar: AppBar(
 //        primary: true,
 //        title: Text("Login"),
 //        centerTitle: true,
 //      ),
-      body: Container(
-        alignment: Alignment.center,
-        child: Container(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                decoration: BoxDecoration(),
-                child: Card(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(75))),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image.asset(
-                        "assets/images/icons8-google-96.png",
-                        scale: 2,
-                      ),
-                    )),
-              ),
-              SizedBox(
-                height: 32,
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 4),
-                decoration: BoxDecoration(
-//                    color: Colors.black38,
-                    borderRadius: BorderRadius.circular(75),
-                    border: Border.all(color: Colors.black26)),
-                margin: EdgeInsets.symmetric(vertical: 8, horizontal: 48),
-                child: Row(
+            body: Container(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Expanded(
-                      child: TextFormField(
-                        controller: emailTextController,
-                        style: TextStyle(letterSpacing: 1),
-                        textAlign: TextAlign.center,
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Email',
-                            hintStyle: TextStyle(
-                                fontSize: 16,
-//                                color: Colors.white54,
-                                letterSpacing: 1)),
-                        validator: Validator.validateEmail,
-                        textInputAction: TextInputAction.next,
-                        onFieldSubmitted: (value) {
-                          FocusScope.of(context)
-                              .requestFocus(textSecondFocusNode);
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 4),
-                decoration: BoxDecoration(
-//                    color: Colors.black38,
-                    borderRadius: BorderRadius.circular(75),
-                    border: Border.all(color: Colors.black26)),
-                margin: EdgeInsets.symmetric(vertical: 8, horizontal: 48),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: TextFormField(
-                        controller: passwordTextController,
-                        style: TextStyle(letterSpacing: 1),
-                        textAlign: TextAlign.center,
-                        keyboardType: TextInputType.emailAddress,
-                        obscureText: true,
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Password',
-                            hintStyle:
-                                TextStyle(fontSize: 16, letterSpacing: 1)),
-                        validator: Validator.validatePassword,
-                        focusNode: textSecondFocusNode,
-                        textInputAction: TextInputAction.next,
-                        onFieldSubmitted: (value) {
-                          signIn();
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(32.0),
-              ),
-              (isLoading)
-                  ? CircularProgressIndicator()
-                  : Container(
-                      width: MediaQuery.of(context).size.width,
-                      margin: const EdgeInsets.symmetric(horizontal: 48),
-                      alignment: Alignment.center,
-                      child: (isLoading)
-                          ? CircularProgressIndicator()
-                          : RaisedButton(
-                              color: Colors.blueAccent,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(75.0)),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Padding(
-                                      padding: EdgeInsets.only(
-                                          top: 16.0,
-                                          bottom: 16.0,
-                                          left: 16,
-                                          right: 16),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Text(
-                                            'Sign in',
-                                            textAlign: TextAlign.center,
-                                            overflow: TextOverflow.ellipsis,
-                                            textScaleFactor: 1,
-                                            style: CustomTextStyles
-                                                .primaryButtonTextStyle,
-                                          ),
-                                        ],
-                                      )),
-                                ],
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(60),
+                                bottomRight: Radius.circular(60),
                               ),
-                              onPressed: () {
+                              gradient: LinearGradient(
+                                  colors: [
+                                    Color(0xff1C6BFF),
+                                    Color(0xffC523FF),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight)),
+                          height: size.height * splashAnimation.value,
+                          width: double.infinity,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Container(
+                                alignment: Alignment.center,
+                                height: size.height * 0.15,
+                                width: size.height * 0.15,
+                                decoration: BoxDecoration(),
+                                child: Material(
+                                    elevation: 4,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(75))),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: Image.asset(
+                                        "assets/images/icon.png",
+                                        fit: BoxFit.cover,
+                                      ),
+                                    )),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 60,
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 4),
+                      decoration: BoxDecoration(
+//                    color: Colors.black38,
+                          borderRadius: BorderRadius.circular(75),
+                          border: Border.all(color: Colors.black26)),
+                      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 48),
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: TextFormField(
+                              controller: emailTextController,
+                              style: TextStyle(letterSpacing: 1),
+                              textAlign: TextAlign.center,
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: 'Email',
+                                  hintStyle: TextStyle(
+                                      fontSize: 16,
+//                                color: Colors.white54,
+                                      letterSpacing: 1)),
+                              validator: Validator.validateEmail,
+                              textInputAction: TextInputAction.next,
+                              onFieldSubmitted: (value) {
+                                FocusScope.of(context)
+                                    .requestFocus(textSecondFocusNode);
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 4),
+                      decoration: BoxDecoration(
+//                    color: Colors.black38,
+                          borderRadius: BorderRadius.circular(75),
+                          border: Border.all(color: Colors.black26)),
+                      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 48),
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: TextFormField(
+                              controller: passwordTextController,
+                              style: TextStyle(letterSpacing: 1),
+                              textAlign: TextAlign.center,
+                              keyboardType: TextInputType.emailAddress,
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: 'Password',
+                                  hintStyle: TextStyle(
+                                      fontSize: 16, letterSpacing: 1)),
+                              validator: Validator.validatePassword,
+                              focusNode: textSecondFocusNode,
+                              textInputAction: TextInputAction.next,
+                              onFieldSubmitted: (value) {
                                 signIn();
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(32.0),
+                    ),
+                    (isLoading)
+                        ? CircularProgressIndicator()
+                        : Container(
+                            width: MediaQuery.of(context).size.width,
+                            margin: const EdgeInsets.symmetric(horizontal: 48),
+                            alignment: Alignment.center,
+                            child: (isLoading)
+                                ? CircularProgressIndicator()
+                                : InkWell(
+                                    child: Material(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(75)),
+                                      child: Container(
+                                        width: size.width * 0.75,
+                                        decoration: BoxDecoration(
+                                            gradient: LinearGradient(
+                                                colors: [
+                                                  Color(0xff1C6BFF),
+                                                  Color(0xffC523FF),
+                                                ],
+                                                begin: Alignment.topLeft,
+                                                end: Alignment.bottomRight),
+                                            borderRadius:
+                                                BorderRadius.circular(75)),
+                                        child: Padding(
+                                            padding: EdgeInsets.only(
+                                                top: 16.0,
+                                                bottom: 16.0,
+                                                left: 16,
+                                                right: 16),
+                                            child: Text(
+                                              'Sign in',
+                                              textAlign: TextAlign.center,
+                                              overflow: TextOverflow.ellipsis,
+                                              textScaleFactor: 1,
+                                              style: CustomTextStyles
+                                                  .primaryButtonTextStyle,
+                                            )),
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      signIn();
 //                                String email =
 //                                    emailTextController.text.toString().trim();
 //                                String password = passwordTextController.text
@@ -311,12 +359,12 @@ class _UserLoginState extends State<UserLogin>
 //                                    isLoading = false;
 //                                  });
 //                                });
-                              }),
-                    ),
-            ],
+                                    })),
+                  ],
+                ),
+              ),
+            ),
           ),
-        ),
-      ),
     );
   }
 
