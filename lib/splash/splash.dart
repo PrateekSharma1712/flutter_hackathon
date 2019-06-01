@@ -16,7 +16,7 @@ class _AppSplashScreenState extends State<AppSplashScreen> {
   void initState() {
     super.initState();
 
-    startTimer();
+   startTimer();
   }
 
   startMainScreen() {
@@ -31,7 +31,7 @@ class _AppSplashScreenState extends State<AppSplashScreen> {
   }
 
   startTimer() async {
-    var _duration = new Duration(seconds: 1, milliseconds: 500);
+    var _duration = new Duration( milliseconds: 1500);
     return new Timer(_duration, startMainScreen);
   }
 
@@ -47,10 +47,7 @@ class _AppSplashScreenState extends State<AppSplashScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Container(
-            decoration: BoxDecoration( borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(60),
-                          bottomRight: Radius.circular(60),
-                        ),
+            decoration: BoxDecoration( 
                 gradient: LinearGradient(colors: [
                   Color(0xff1C6BFF),
                   Color(0xffC523FF),
