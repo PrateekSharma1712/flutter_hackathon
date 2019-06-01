@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hackathon/splash/splash.dart';
+import 'package:flutter_hackathon/user/user_login.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,16 +12,19 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: AppSplashScreen(),
+      routes: {
+        "/login": (context) => UserLogin(),
+      },
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => ChatScreen();
-}
+//class MyHomePage extends StatefulWidget {
+//  MyHomePage({Key key, this.title}) : super(key: key);
+//
+//  final String title;
+//
+//  @override
+//  _MyHomePageState createState() => ChatScreen();
+//}
