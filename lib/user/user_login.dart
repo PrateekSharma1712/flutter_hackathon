@@ -17,6 +17,7 @@ class _UserLoginState extends State<UserLogin>
     with SingleTickerProviderStateMixin {
   AnimationController _controller;
   Animation<double> splashAnimation;
+  Animation<double> borderAnimation;
   final passwordTextController = TextEditingController();
   final nameTextController = TextEditingController();
 
@@ -30,9 +31,19 @@ class _UserLoginState extends State<UserLogin>
   @override
   void initState() {
     _controller =
-        AnimationController(duration: Duration(seconds: 2), vsync: this);
+        AnimationController(duration: Duration(milliseconds: 1200), vsync: this);
     Tween tween = new Tween<double>(begin: 1, end: 0.5);
-    splashAnimation = tween.animate(_controller);
+    Tween tween2 = new Tween<double>(begin: 0, end: 1);
+    splashAnimation = tween.animate(
+      CurvedAnimation(
+parent: _controller,
+curve: Curves.easeInCubic
+      )
+      );
+    borderAnimation = tween2.animate(CurvedAnimation(
+parent: _controller,
+curve: Curves.easeInCubic
+      ));
    // splashAnimation.addListener(() {
     //  setState(() {});
   //  });
@@ -166,8 +177,8 @@ class _UserLoginState extends State<UserLogin>
                         Container(
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(60),
-                                bottomRight: Radius.circular(60),
+                                bottomLeft: Radius.circular(borderAnimation.value*40),
+                                bottomRight: Radius.circular(borderAnimation.value*40),
                               ),
                               gradient: LinearGradient(
                                   colors: [
