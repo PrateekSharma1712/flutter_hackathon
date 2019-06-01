@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "921654670109",
+    "firebase_url": "https://flutter-hackathon-f5a2a.firebaseio.com",
+    "project_id": "flutter-hackathon-f5a2a",
+    "storage_bucket": "flutter-hackathon-f5a2a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:921654670109:android:617e8f6bc1a64ce1",
+        "android_client_info": {
+          "package_name": "com.example.mlkit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "921654670109-50ba6t7bnhrvq95jfcscv8j9otv1eu8g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhnNZsQO3LSAiO-CGoPu6nb_yx8_DmnVg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "921654670109-50ba6t7bnhrvq95jfcscv8j9otv1eu8g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
