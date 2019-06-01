@@ -33,7 +33,8 @@ dependencies:
   http:
   provider: ^2.0.1+1
   auro_avatar: ^0.1.0
-
+#  speech_recognition: ^0.3.0+1
+#  flutter_plugin_tts: ^1.0.2
 
 dev_dependencies:
   flutter_test:
