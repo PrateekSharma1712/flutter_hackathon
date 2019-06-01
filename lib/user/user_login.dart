@@ -26,7 +26,6 @@ class _UserLoginState extends State<UserLogin>
   FocusNode textSecondFocusNode = new FocusNode();
   bool isLoading = false;
 
-
   @override
   void initState() {
     _controller = AnimationController(vsync: this);
@@ -44,9 +43,7 @@ class _UserLoginState extends State<UserLogin>
         if (isComplete) {
           SnackBarDelegate.showSnackBar(
               context, "Registration complete", _scaffoldKey);
-        } else {
-
-        }
+        } else {}
         setState(() {
           isLoading = false;
         });
@@ -56,64 +53,64 @@ class _UserLoginState extends State<UserLogin>
     askUserName() {
       showDialog(
         context: context,
-        builder: (BuildContext context) =>
-        new AlertDialog(
-          title: new Text("Details"),
-          content: Column(
-            children: <Widget>[
-              new Text("Enter your name to continue"),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 4),
-                decoration: BoxDecoration(
+        builder: (BuildContext context) => new AlertDialog(
+              title: new Text("Details"),
+              content: Column(
+                children: <Widget>[
+                  new Text("Enter your name to continue"),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 4),
+                    decoration: BoxDecoration(
 //                    color: Colors.black38,
-                    borderRadius: BorderRadius.circular(75),
-                    border: Border.all(color: Colors.black26)),
-                margin: EdgeInsets.symmetric(vertical: 8, horizontal: 48),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: TextFormField(
-                        controller: nameTextController,
-                        style: TextStyle(letterSpacing: 1),
-                        textAlign: TextAlign.center,
-                        keyboardType: TextInputType.text,
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Name',
-                            hintStyle: TextStyle(
-                                fontSize: 16,
+                        borderRadius: BorderRadius.circular(75),
+                        border: Border.all(color: Colors.black26)),
+                    margin: EdgeInsets.symmetric(vertical: 8, horizontal: 48),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: TextFormField(
+                            controller: nameTextController,
+                            style: TextStyle(letterSpacing: 1),
+                            textAlign: TextAlign.center,
+                            keyboardType: TextInputType.text,
+                            decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Name',
+                                hintStyle: TextStyle(
+                                    fontSize: 16,
 //                                color: Colors.white54,
-                                letterSpacing: 1)),
-                        validator: Validator.validateEmail,
-                        textInputAction: TextInputAction.next,
-                        onFieldSubmitted: (value) {
-                          updateData();
-                          Navigator.of(context).pop();
-                        },
-                      ),
+                                    letterSpacing: 1)),
+                            validator: Validator.validateEmail,
+                            textInputAction: TextInputAction.next,
+                            onFieldSubmitted: (value) {
+                              updateData();
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
-          actions: [
-            FlatButton(
-              child: new Text('Submit'),
-              onPressed: () async {
-                updateData();
+              actions: [
+                FlatButton(
+                  child: new Text('Submit'),
+                  onPressed: () async {
+                    updateData();
 
-                Navigator.of(context).pop();
-              },
-            )
-          ],
-        ),
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            ),
       );
     }
 
     showError(error) {
       SnackBarDelegate.showSnackBar(context, error, _scaffoldKey);
     }
+
     signIn() {
       String email = emailTextController.text.toString().trim();
       String password = passwordTextController.text.toString().trim();
@@ -222,7 +219,7 @@ class _UserLoginState extends State<UserLogin>
                             border: InputBorder.none,
                             hintText: 'Password',
                             hintStyle:
-                            TextStyle(fontSize: 16, letterSpacing: 1)),
+                                TextStyle(fontSize: 16, letterSpacing: 1)),
                         validator: Validator.validatePassword,
                         focusNode: textSecondFocusNode,
                         textInputAction: TextInputAction.next,
@@ -240,45 +237,42 @@ class _UserLoginState extends State<UserLogin>
               (isLoading)
                   ? CircularProgressIndicator()
                   : Container(
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width,
-                margin: const EdgeInsets.symmetric(horizontal: 48),
-                alignment: Alignment.center,
-                child: (isLoading)
-                    ? CircularProgressIndicator()
-                    : RaisedButton(
-                    color: Colors.blueAccent,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(75.0)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Padding(
-                            padding: EdgeInsets.only(
-                                top: 16.0,
-                                bottom: 16.0,
-                                left: 16,
-                                right: 16),
-                            child: Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                  'Sign in',
-                                  textAlign: TextAlign.center,
-                                  overflow: TextOverflow.ellipsis,
-                                  textScaleFactor: 1,
-                                  style: CustomTextStyles
-                                      .primaryButtonTextStyle,
-                                ),
-                              ],
-                            )),
-                      ],
-                    ),
-                    onPressed: () {
-                      signIn();
+                      width: MediaQuery.of(context).size.width,
+                      margin: const EdgeInsets.symmetric(horizontal: 48),
+                      alignment: Alignment.center,
+                      child: (isLoading)
+                          ? CircularProgressIndicator()
+                          : RaisedButton(
+                              color: Colors.blueAccent,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(75.0)),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Padding(
+                                      padding: EdgeInsets.only(
+                                          top: 16.0,
+                                          bottom: 16.0,
+                                          left: 16,
+                                          right: 16),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Text(
+                                            'Sign in',
+                                            textAlign: TextAlign.center,
+                                            overflow: TextOverflow.ellipsis,
+                                            textScaleFactor: 1,
+                                            style: CustomTextStyles
+                                                .primaryButtonTextStyle,
+                                          ),
+                                        ],
+                                      )),
+                                ],
+                              ),
+                              onPressed: () {
+                                signIn();
 //                                String email =
 //                                    emailTextController.text.toString().trim();
 //                                String password = passwordTextController.text
@@ -317,11 +311,10 @@ class _UserLoginState extends State<UserLogin>
 //                                    isLoading = false;
 //                                  });
 //                                });
-                    }),
-              ),
+                              }),
+                    ),
             ],
           ),
-        
         ),
       ),
     );

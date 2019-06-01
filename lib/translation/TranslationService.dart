@@ -8,7 +8,6 @@ Future<Translation> translateString(String source, String languageCode) async {
       "https://translation.googleapis.com/language/translate/v2?target=${languageCode}&key=${GoogleConstants.TRANSLATION_API_KEY}&q=${source}";
 
   var response = await http.get(url);
-  //print(response.body);
   var jsonResponse = json.decode(response.body);
   TranslationResponse translationResponse =
       TranslationResponse.fromJson(jsonResponse);
