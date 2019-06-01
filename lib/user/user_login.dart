@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hackathon/translation/TranslationResponse.dart';
+import 'package:flutter_hackathon/translation/TranslationService.dart';
 import 'package:flutter_hackathon/user/server/login_server.dart';
 import 'package:flutter_hackathon/user/storage/user_shared_pref.dart';
 import 'package:flutter_hackathon/utils/validators.dart';
@@ -19,6 +21,7 @@ class _UserLoginState extends State<UserLogin>
   bool isLoggedIn = false;
   var profileData;
   FocusNode textSecondFocusNode = new FocusNode();
+
 
   @override
   void initState() {
@@ -106,6 +109,7 @@ class _UserLoginState extends State<UserLogin>
                 ],
               ),
             ),
+           
           ],
         ),
       ),

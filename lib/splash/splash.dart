@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_hackathon/translation/TranslationService.dart';
 
 class AppSplashScreen extends StatefulWidget {
   @override
@@ -12,7 +13,6 @@ class _AppSplashScreenState extends State<AppSplashScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     startTimer();

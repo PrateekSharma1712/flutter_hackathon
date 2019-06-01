@@ -30,6 +30,7 @@ dependencies:
   firebase_database: ^2.0.1+1
   cloud_firestore:  ^0.9.0+2
   shared_preferences: ^0.4.3
+  http:
 
 
 dev_dependencies:
