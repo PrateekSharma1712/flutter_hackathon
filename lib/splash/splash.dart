@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hackathon/translation/TranslationService.dart';
+import 'package:flutter_hackathon/user/storage/user_shared_pref.dart';
 
 class AppSplashScreen extends StatefulWidget {
   @override
@@ -19,7 +20,14 @@ class _AppSplashScreenState extends State<AppSplashScreen> {
   }
 
   startMainScreen() {
-    Navigator.pushReplacementNamed(context, "/login");
+    UserSharedPreference.getLoggedInUserEmail().then((email) {
+      print(email);
+      if (email != null || email.toString() == "")
+        Navigator.pushReplacementNamed(context, "/chat");
+      else {
+        Navigator.pushReplacementNamed(context, "/login");
+      }
+    });
   }
 
   startTimer() async {
@@ -29,7 +37,6 @@ class _AppSplashScreenState extends State<AppSplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         body: Container(
             alignment: Alignment.center,

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hackathon/splash/splash.dart';
 import 'package:flutter_hackathon/user/user_login.dart';
 
+import 'chat/chat.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -15,6 +17,7 @@ class MyApp extends StatelessWidget {
       home: AppSplashScreen(),
       routes: {
         "/login": (context) => UserLogin(),
+        "/chat": (context) => Chats(),
       },
     );
   }
