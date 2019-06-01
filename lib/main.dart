@@ -12,16 +12,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primaryColor: Color(0xffC523FF),
-      ),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(primaryColor: Color(0xffC523FF), canvasColor: Colors.white),
       home: AppSplashScreen(),
       routes: {
         "/login": (context) => UserLogin(),
         "/chat": (context) => Provider<DialogFlowService>(
-          child: ChatScreen(),
-          builder: (context) => DialogFlowService(),
-        ),
+              child: ChatScreen(),
+              builder: (context) => DialogFlowService(),
+            ),
       },
     );
   }

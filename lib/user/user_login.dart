@@ -37,8 +37,8 @@ class _UserLoginState extends State<UserLogin>
     //  setState(() {});
   //  });
     _controller.forward();
-    emailTextController.text = "viv@test.com";
-    passwordTextController.text = "111111";
+    emailTextController.text = "";
+    passwordTextController.text = "";
     super.initState();
   }
 
@@ -56,14 +56,14 @@ class _UserLoginState extends State<UserLogin>
     });
   }
 
-  askUserName() {
+  /*askUserName() {
     showDialog(
       context: context,
       builder: (BuildContext context) => new AlertDialog(
             title: new Text("Details"),
             content: Column(
               children: <Widget>[
-                new Text("Enter your name to continue"),
+                new Text("Enter your email to continue"),
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 4),
                   decoration: BoxDecoration(
@@ -81,7 +81,7 @@ class _UserLoginState extends State<UserLogin>
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
                               border: InputBorder.none,
-                              hintText: 'Name',
+                              hintText: 'Email',
                               hintStyle: TextStyle(
                                   fontSize: 16,
 //                                color: Colors.white54,
@@ -111,7 +111,7 @@ class _UserLoginState extends State<UserLogin>
             ],
           ),
     );
-  }
+  }*/
 
   showError(error) {
     SnackBarDelegate.showSnackBar(context, error, _scaffoldKey);
@@ -121,9 +121,7 @@ class _UserLoginState extends State<UserLogin>
     String email = emailTextController.text.toString().trim();
     String password = passwordTextController.text.toString().trim();
     LoginServer().handleSignIn(email, password).then((user) {
-      if (user == "no_user_data") {
-        askUserName();
-      } else if (user == "error") {
+      if (user == "error") {
         showError(user);
       } else {
         print(user);
@@ -131,7 +129,7 @@ class _UserLoginState extends State<UserLogin>
         if (u != null) {
           UserSharedPreference.updateLoggedInUserDetails(
             email,
-            u.name,
+            email,
           );
           UserSharedPreference.getLoggedInUserDetails().then((userData) {
             print(userData);
