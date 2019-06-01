@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hackathon/translation/TranslationService.dart';
+import 'package:flutter_hackathon/user/storage/user_shared_pref.dart';
 
 class AppSplashScreen extends StatefulWidget {
   @override

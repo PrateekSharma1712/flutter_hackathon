@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hackathon/database/database_collections.dart';
 import 'package:flutter_hackathon/dialogflow/dialog_flow_service.dart';
 import 'package:flutter_hackathon/widgets/chat_message_widget.dart';
 import 'package:provider/provider.dart';
@@ -10,23 +11,19 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  var resp = "";
   TextEditingController _textEditingController;
+  Firestore db = Firestore.instance;
+  CollectionReference reference;
 
   @override
   void initState() {
     super.initState();
     _textEditingController = TextEditingController();
+    reference = db.collection(DatabaseCollections.USER_CHATS);
   }
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<DialogFlowService>(context).request("Hi How can you help me").then((result) {
-      setState(() {
-        resp = result;
-      });
-    });
-
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
@@ -61,18 +58,36 @@ class _ChatScreenState extends State<ChatScreen> {
                         child: TextField(
                           controller: _textEditingController,
                           cursorColor: Colors.white,
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 14, fontStyle: FontStyle.normal),
                           decoration: InputDecoration(
                               contentPadding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
                               border: InputBorder.none,
                               hintText: "Type something",
-                              hintStyle:
-                              TextStyle(color: Colors.white30, fontSize: 14, fontStyle: FontStyle.italic)),
+                              hintStyle: TextStyle(
+                                  color: Colors.white30, fontSize: 14, fontStyle: FontStyle.italic)),
                           textInputAction: TextInputAction.send,
+                          onSubmitted: (text) {
+                            sendQuery(text);
+                            _textEditingController.clear();
+                            _textEditingController.clearComposing();
+                          },
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Icon(Icons.send, color: Colors.white, size: 20,),
+                      InkWell(
+                        onTap: () {
+                          sendQuery(_textEditingController.text);
+                          _textEditingController.clear();
+                          _textEditingController.clearComposing();
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(
+                            Icons.send,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -84,6 +99,13 @@ class _ChatScreenState extends State<ChatScreen> {
         ],
       ),
     );
+  }
+
+  sendQuery(message) {
+
+    Provider.of<DialogFlowService>(context).request(message).then((result) {
+
+    });
   }
 
   Widget _buildChatList(BuildContext context, List<DocumentSnapshot> snapshots) {
