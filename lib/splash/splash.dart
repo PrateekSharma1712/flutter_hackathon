@@ -22,7 +22,7 @@ class _AppSplashScreenState extends State<AppSplashScreen> {
   startMainScreen() {
     UserSharedPreference.getLoggedInUserEmail().then((email) {
       print(email);
-      if (email != null || email.toString() == "")
+      if (email != null && email.toString() != "")
         Navigator.pushReplacementNamed(context, "/chat");
       else {
         Navigator.pushReplacementNamed(context, "/login");
