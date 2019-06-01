@@ -34,7 +34,12 @@ class _ChatScreenState extends State<ChatScreen> {
             child: StreamBuilder(
               builder: (context, snapshot) {
                 return !snapshot.hasData
-                    ? Center(child: CircularProgressIndicator())
+                    ? Center(
+                        child: Text(
+                          "No Chat History. Start converation!!",
+                          style: TextStyle(fontSize: 20.0, color: Colors.black),
+                        ),
+                      )
                     : _buildChatList(context, snapshot.data.documents);
               },
             ),
@@ -102,10 +107,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   sendQuery(message) {
-
-    Provider.of<DialogFlowService>(context).request(message).then((result) {
-
-    });
+    Provider.of<DialogFlowService>(context).request(message).then((result) {});
   }
 
   Widget _buildChatList(BuildContext context, List<DocumentSnapshot> snapshots) {
