@@ -33,12 +33,19 @@ class LoginServer {
         .then((user) {
       fetchUserDataByEmail(email.toLowerCase()).then((b) {
         if (b == "error") {
-          complete.completeError("error");
+          complete.complete("error");
+        } else if (b == "no_user_data") {
+          complete.complete("no_user_data");
         } else
           complete.complete(b);
       });
     }).catchError((error) {
-      complete.completeError(error);
+//      complete.completeError(error);
+      handleSignUp(email, password).then((value) {
+        complete.complete(value);
+      }).catchError((e) {
+        complete.completeError(e);
+      });
     });
     return complete.future;
   }
@@ -58,7 +65,7 @@ class LoginServer {
     return complete.future;
   }
 
-  uploadUserData(email, name, workshopNum, mobileNum, password) async {
+  uploadUserData(email, name) async {
     var complete = Completer();
     Firestore db = Firestore.instance;
     final TransactionHandler userDetailTransactionHandler =
@@ -133,11 +140,14 @@ class LoginServer {
         user.uid = value.documents[0].documentID;
         complete.complete(user);
       } else {
-        complete.complete(null);
+        complete.complete("no_user_data");
       }
     }).catchError((error) {
       print(error);
-      complete.complete("error");
+      if (error.message == "Invalid value") {
+        complete.complete("no_user_data");
+      } else
+        complete.complete("error");
     });
     return complete.future;
   }
