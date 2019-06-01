@@ -19,7 +19,14 @@ class _AppSplashScreenState extends State<AppSplashScreen> {
   }
 
   startMainScreen() {
-    Navigator.pushReplacementNamed(context, "/chat");
+    UserSharedPreference.getLoggedInUserEmail().then((email) {
+      print(email);
+      if (email != null || email.toString() == "")
+        Navigator.pushReplacementNamed(context, "/chat");
+      else {
+        Navigator.pushReplacementNamed(context, "/login");
+      }
+    });
   }
 
   startTimer() async {
@@ -29,7 +36,6 @@ class _AppSplashScreenState extends State<AppSplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         body: Container(
             alignment: Alignment.center,
