@@ -17,15 +17,15 @@ class TranslationResponse {
 }
 
 class Data {
-  List<Translations> translations;
+  List<Translation> translations;
 
   Data({this.translations});
 
   Data.fromJson(Map<String, dynamic> json) {
     if (json['translations'] != null) {
-      translations = new List<Translations>();
+      translations = new List<Translation>();
       json['translations'].forEach((v) {
-        translations.add(new Translations.fromJson(v));
+        translations.add(new Translation.fromJson(v));
       });
     }
   }
@@ -39,13 +39,13 @@ class Data {
   }
 }
 
-class Translations {
+class Translation {
   String translatedText;
   String detectedSourceLanguage;
 
-  Translations({this.translatedText, this.detectedSourceLanguage});
+  Translation({this.translatedText, this.detectedSourceLanguage});
 
-  Translations.fromJson(Map<String, dynamic> json) {
+  Translation.fromJson(Map<String, dynamic> json) {
     translatedText = json['translatedText'];
     detectedSourceLanguage = json['detectedSourceLanguage'];
   }

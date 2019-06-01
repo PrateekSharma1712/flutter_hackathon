@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 String apiKey = "AIzaSyBg-EiyCyYqIFOffHqHhgkrm4ILJSl2V4I";
 
-Future<Translations> translateString(String source, String languageCode) async {
+Future<Translation> translateString(String source, String languageCode) async {
   String url =
       "https://translation.googleapis.com/language/translate/v2?target=${languageCode}&key=${apiKey}&q=${source}";
 
@@ -14,6 +14,6 @@ Future<Translations> translateString(String source, String languageCode) async {
   var jsonResponse = json.decode(response.body);
   TranslationResponse translationResponse =
       TranslationResponse.fromJson(jsonResponse);
-  Translations translation = translationResponse.data.translations[0];
+  Translation translation = translationResponse.data.translations[0];
   return translation;
 }
