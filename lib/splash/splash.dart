@@ -19,7 +19,7 @@ class _AppSplashScreenState extends State<AppSplashScreen> {
   }
 
   startMainScreen() {
-    Navigator.pushReplacementNamed(context, "/login");
+    Navigator.pushReplacementNamed(context, "/chat");
   }
 
   startTimer() async {
