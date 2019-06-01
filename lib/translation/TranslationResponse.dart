@@ -48,6 +48,7 @@ class Translation {
   Translation.fromJson(Map<String, dynamic> json) {
     translatedText = json['translatedText'];
     detectedSourceLanguage = json['detectedSourceLanguage'];
+
   }
 
   Map<String, dynamic> toJson() {
