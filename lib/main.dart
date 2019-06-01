@@ -28,6 +28,19 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   TextEditingController textController = new TextEditingController();
 
+  var languageTranslator;
+
+  Future<Null> initTranslator() async {
+    languageTranslator = FirebaseLanguage.instance.languageTranslator(
+        SupportedLanguages.English, SupportedLanguages.Hindi);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initTranslator();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +54,8 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Text("IDENTIFY"),
               onPressed: () async {
                 String text = textController.text;
-
+                //Identification
+/*
                 final List<LanguageLabel> labels =
                     await languageIdentifier.processText(text);
                 for (LanguageLabel label in labels) {
@@ -50,6 +64,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   print("Text: " + text);
                   print("Confidence: " + confidence.toString());
                 }
+
+                */
+
+                //Translation
+                final String translatedString = await languageTranslator.processText(text);
+                print(translatedString);
+
               }),
         ],
       ),
